@@ -157,6 +157,36 @@ public class GeoLocation implements Parcelable {
         return new GeoPoint(exactLat, exactLong, 0);
     }
 
+    /**
+     * This method should round a Latitude or Longitude to an accuracy where moving only a couple meters will be considered the same GeoLocation
+     * We want that scanning a QRCode a second time in a slightly different spot will not produce a new GeoLocation with nearly the same data as the first.
+     * It is important to understand why this rounded coordinates is separate from the Approx coordinates already stored:
+     *      The Approx coordinates stored in this class should round to a distance of around 20-70km, so that it becomes easy to access, from the
+     *      database, all QRCodes within a long distance of the user, when they open the map activity. This is a separate need from the one stated above.
+     * Perhaps ApproxLat can be changed away from the Integer Floor, which suffers from the below problems, to instead use this method, but with an optional parameter
+     *      to round to a much larger margin, that results in a 5-10km distance rather than a 2-5 metre distance.
+     *      Food for though: Does approxLat even need to be stored in a GeoLocation? It does not need to be used within the app, it only exists to simplify fetching from
+     *      Firebase, which, BTW, locations are now stored in a separate location from the rest of QRCode data, thanks to Sean's work on the Map stuff, so does a QRCode even
+     *      need to hold a list of GeoLocations in it right now? Anyways, this is beyond this scope of this method, and should probably be documented elsewhere. Back to the method!
+     *
+     * Rounding the Lats/Longs is more complicated than it sounds, I will document my current issue here:
+     *      - What we want is to round to a degree of accuracy in the scale of metres, but what we have is Longitude and Latitude
+     *      - We could round to an arbitrary decimal digit, but this has a glaring flaw:
+     *              1° change in Latitude is a different distance depending on the Longitude, and a
+     *              1° change in Longitude is a different distance depending on the Latitude
+     *              At the equator, 1° change in Longitude is ~70km, which shrinks to 0m at the Poles
+     *         -> The rounding distance would always be inconsistent, and would depend on the position of the user on the globe
+     *      - The solution is to create a formula that rounds both Latitude and Longitude at the same time, and rounds them to various degrees of accuracy
+     *              depending on the other given value. This method would round a significantly more accurate Longitude at the Equator,
+     *              and would round Longitude to a larger margin in far North and far South locations
+     *              The same system would be applied to rounding Latitude.
+     * TODO: Think about the above documentation, find a solution to all the raised concerns, and then remove the unnecessary docs
+     */
+    private void round(double Lat, double Long) {
+        this.exactLat = /* round( */ Lat;
+        this.exactLong = /* round( */ Long;
+    }
+
     /* - - - - - - Parcelable implementation - - - - - - - */
     protected GeoLocation(Parcel in) {
         exactLat = in.readDouble();
