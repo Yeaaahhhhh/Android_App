@@ -30,6 +30,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Activity to save a QRCode to the database. Provides a UI location to give QRCodes titles, and
+ * will get the geolocation of the user if they choose to save their location.
+ */
 public class CodeSaveActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     QRCode qrcode;

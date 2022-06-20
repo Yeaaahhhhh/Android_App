@@ -21,8 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 /**
- * An Adapter for RecyclerViews that takes in two ArrayLists: one for Bitmap objects & one for strings,
- * and maps them to the layout file for the QRCode adapter in qr_recycler_items.xml
+ * An Adapter for RecyclerViews that takes in two ArrayLists containing Strings
+ * and maps them to the layout file for the QRCode adapter in recycler_text_subtext.xml
  */
 public class AdapterTextSubtext extends RecyclerView.Adapter<AdapterTextSubtext.QRViewHolder> {
     private ArrayList<String> data;
@@ -54,10 +54,18 @@ public class AdapterTextSubtext extends RecyclerView.Adapter<AdapterTextSubtext.
         this.listener = null;
     }
 
+    /**
+     * Get the layout manager intended to be used for this recycler layout
+     */
     public LinearLayoutManager getLayoutManager() {
         return new LinearLayoutManager(ct, LinearLayoutManager.VERTICAL, false);
     }
 
+    /**
+     * Replace the data displayed in the recycler with new data. Intended purpose is only to
+     * call when the original data source has been altered (reordered, elements added/removed)
+     * @param data A new ArrayList of strings
+     */
     public void sortData(ArrayList<String> data, ArrayList<String> subdata) {
         this.data = data;
         this.subdata = subdata;

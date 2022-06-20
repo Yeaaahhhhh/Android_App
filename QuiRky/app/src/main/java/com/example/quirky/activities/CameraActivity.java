@@ -79,7 +79,9 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     /**
-     * Use the camera to take a picture, then scan the image for a QRCode. If one is found, continue at scannedCode()
+     * Use the camera to take a picture, then scan the image for a QRCode.
+     * If a code is successfully scanned, followup with one of the following 3 methods;
+     *  loginUser(...), viewProfile(...), or saveCode(...)
      */
     @androidx.camera.core.ExperimentalGetImage
     public void getCode() {

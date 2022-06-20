@@ -121,15 +121,20 @@ public class ManageCodesActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Resort the order that the QRCodes are displayed.
+     * Will check the sorting switch to determine if to display the QRCodes from a low to high score
+     * or from a high to low score
+     */
     private void sort() {
         boolean isChecked = sortButton.isChecked();
 
         Comparator<QRCode> sorter;
 
         if(isChecked) {
-            sorter = (code1, code2) -> (code2.getScore() - code1.getScore()); // Android studio would like to simplify this statement, but I have chosen not to.
+            sorter = (code1, code2) -> (code2.getScore() - code1.getScore());
         } else {
-            sorter = (code1, code2) -> (code1.getScore() - code2.getScore());
+            sorter = (code1, code2) -> (code1.getScore() - code2.getScore()); // Android studio wants to simplify this line, but I have not, as to match the line above
         }
 
         codes.sort(sorter);

@@ -142,13 +142,14 @@ public class HubActivity extends AppCompatActivity implements ActivityCompat.OnR
 
     /**
      * Start a new activity, or logout of the app. Called when one of the feature buttons is clicked on.
-     * @param feature The text of the button that was clicked on.
-     *                TODO: see CMPUT301 slides, the factory design pattern may simplify the code below. It deals with long switch statements or if statements.
+     * @param feature The text of the button that was clicked on
      */
     private void StartActivity(String feature) {
         Intent i;
         Profile p = mc.read();
-        
+
+        // TODO: If you are reviewing these changes and are wondering why I changed the switch statement into a long chain of 'if' statements
+        // TODO:    Then ask me about it. There are a couple pros/cons to each implementation that I thought about.
         if ( feature.equals(button_texts[0]) )
                 cac.startCodeScannerActivity();
 
@@ -223,12 +224,19 @@ public class HubActivity extends AppCompatActivity implements ActivityCompat.OnR
         }
     }
 
+    /**
+     * Start the generate activity. This has it's own method because it is used in a couple places in StartActivity(...)
+     * Just a small reduction of code.
+     */
     private void startGenerateActivity() {
         Intent i = new Intent(this, GenerateActivity.class);
         startActivity(i);
     }
 
-
+    /**
+     * Called when the user has confirmed they would like to log out.
+     * Deletes the user from memory and starts LoginActivity
+     */
     public void confirmLogout() {
         mc.deleteUser();
         Intent i = new Intent(this, LoginActivity.class);

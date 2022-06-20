@@ -25,7 +25,12 @@ import com.example.quirky.controllers.DatabaseController;
  */
 public class GenerateActivity extends AppCompatActivity {
 
+    // IDENTIFIER: A hardcoded signal that tells QuiRky that a QRCode is meant to view a profile
+    //              Intended use: append the profile's username to the end of the identifier, and
+    //              generate a QRCode based off that string.
     public static final String IDENTIFIER = "quirky.qrcode.view.profile.";
+
+
     private Button generateLogin, generateViewProfile, generateText;
     private EditText inputField;
     private ImageView qrImage;

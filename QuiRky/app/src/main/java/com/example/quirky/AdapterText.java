@@ -40,16 +40,29 @@ public class AdapterText extends RecyclerView.Adapter<AdapterText.QRViewHolder> 
         this.listener = listener;
     }
 
+    /**
+     * Constructor without listener. Data will not be clickable.
+     * @param data The array of strings to display
+     * @param ct The calling activity
+     */
     public AdapterText(ArrayList<String> data, Context ct) {
         this.data = data;
         this.ct = ct;
         this.listener = null;
     }
 
+    /**
+     * Get the layout manager intended to be used for this recycler layout
+     */
     public LinearLayoutManager getLayoutManager() {
         return new LinearLayoutManager(ct, LinearLayoutManager.VERTICAL, false);
     }
 
+    /**
+     * Replace the data displayed in the recycler with new data. Intended purpose is only to
+     * call when the original data source has been altered (reordered, elements added/removed)
+     * @param data A new ArrayList of strings
+     */
     public void sortData(ArrayList<String> data) {
         this.data = data;
     }

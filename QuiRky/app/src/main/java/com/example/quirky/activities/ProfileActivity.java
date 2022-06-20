@@ -42,6 +42,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     boolean view_self; // Is the player viewing themself?
 
+    /**
+     * Sets up the views and the texts. Will begin reading the players from the database, so that
+     * LeaderBoardController can determine the player's rank, to be displayed.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +91,10 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Called when DatabaseController is done reading the players from the database.
+     * Fills the text in the statistic fields of the activity with the player's rankings/stats
+     */
     private void doneReading() {
         LeaderBoardController lbc = new LeaderBoardController(readResults);
         int position;
@@ -111,13 +119,19 @@ public class ProfileActivity extends AppCompatActivity {
         LargestScannedRank.setText( text_builder );
     }
 
+    /**
+     * Called when the user chooses to view another player's scanned QRCodes. Starts ManageCodesActivity
+     */
     private void viewQRCodes() {
         Intent i = new Intent(this, ManageCodesActivity.class);
         i.putExtra("profile", p);
         startActivity(i);
     }
 
-    // Displayed information must be updated onResume in the event that the user is returning from EditProfileActivity
+    /**
+     * Will update the player's username, phone, and email displayed, so that if the user returns
+     * from EditProfileActivity, outdated data is not displayed
+     */
     @Override
     public void onResume() {
         super.onResume();
