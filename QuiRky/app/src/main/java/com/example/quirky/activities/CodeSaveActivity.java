@@ -18,6 +18,7 @@ import com.example.quirky.controllers.MemoryController;
 import com.example.quirky.models.GeoLocation;
 import com.example.quirky.models.Profile;
 import com.example.quirky.models.QRCode;
+import com.example.quirky.models.UserOwnedQRCode;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -41,6 +42,7 @@ public class CodeSaveActivity extends AppCompatActivity implements ActivityCompa
     MemoryController mc;
     Bitmap photo;
     MapController mapController;
+    GeoLocation location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,8 @@ public class CodeSaveActivity extends AppCompatActivity implements ActivityCompa
 
             ListeningList<GeoLocation> currentLocation = new ListeningList<>();
             currentLocation.setOnAddListener(listeningList -> {
-                qrcode.addLocation(listeningList.get(0));
+                location = listeningList.get(0);
+                qrcode.addLocation(location);
                 save();
             });
             mapController.getLocation(currentLocation);
@@ -118,8 +121,14 @@ public class CodeSaveActivity extends AppCompatActivity implements ActivityCompa
         mc.writeUser(p);
         dc.writeProfile(p.getUname(), p);
 
-        if(photo != null)
+        if(photo != null) {
             dc.writePhoto(qrcode.getId(), photo, this);
+        }
+
+        if (location != null) {
+            UserOwnedQRCode userOwnedQRCode = new UserOwnedQRCode(qrcode.getId(), location);
+            dc.writeNearbyQRCode(userOwnedQRCode);
+        }
 
         Toast.makeText(this, "QRCode saved!", Toast.LENGTH_SHORT).show();
         finish();
